@@ -62,7 +62,7 @@ public class Relationship implements Comparable<Relationship>
 	
 //Public Methods
 
-	@Override
+
 	/**
 	 * Relationships are compared with regard to property, restriction,
 	 * then distance ('is_a' relationships supersede all other properties,

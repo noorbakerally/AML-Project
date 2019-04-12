@@ -21,6 +21,7 @@ package aml.knowledge;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collection;
 import java.util.Set;
 
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -34,6 +35,7 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.search.EntitySearcher;
 import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
 
 import aml.ontology.ReferenceMap;
@@ -167,9 +169,10 @@ public class MediatorOntology
 			}
 
 			//Now get the class's annotations (including imports)
-			Set<OWLAnnotation> annots = c.getAnnotations(o);
+			Collection<OWLAnnotation> annots = EntitySearcher.getAnnotations(c,o);
+
 			for(OWLOntology ont : o.getImports())
-				annots.addAll(c.getAnnotations(ont));
+				annots.addAll(EntitySearcher.getAnnotations(c,o));
             for(OWLAnnotation annotation : annots)
             {
             	//Labels and synonyms go to the Lexicon
@@ -190,7 +193,7 @@ public class MediatorOntology
 	            	else if(annotation.getValue() instanceof IRI)
 	            	{
 	            		OWLNamedIndividual ni = factory.getOWLNamedIndividual((IRI) annotation.getValue());
-	                    for(OWLAnnotation a : ni.getAnnotations(o,label))
+	                    for(OWLAnnotation a : EntitySearcher.getAnnotations(ni,o,label))
 	                    {
 	                       	if(a.getValue() instanceof OWLLiteral)
 	                       	{

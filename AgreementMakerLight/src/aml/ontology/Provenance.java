@@ -54,8 +54,7 @@ public class Provenance implements Comparable<Provenance>
 	}
 
 //Public Methods
-	
-	@Override
+
 	/**
 	 * Provenances are compared first with regard to whether
 	 * they are internal or external, and then by weight
