@@ -39,6 +39,7 @@ import aml.settings.NeighborSimilarityStrategy;
 import aml.settings.SelectionType;
 import aml.settings.StringSimMeasure;
 import aml.settings.WordMatchStrategy;
+
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 public class Main
@@ -68,6 +69,8 @@ public class Main
 		aml.openOntologies(s, t);
 		aml.matchAuto();
 		System.out.println("Number of Alignment:"+aml.getAlignment().size());
+
+
 
 		int i = 1;
 		for (Mapping correspodence:aml.getAlignment()){

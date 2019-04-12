@@ -63,10 +63,6 @@ import aml.settings.SelectionType;
 import aml.settings.SizeCategory;
 import aml.settings.StringSimMeasure;
 import aml.settings.WordMatchStrategy;
-import aml.ui.AMLColor;
-import aml.ui.AlignmentFileChooser;
-import aml.ui.GUI;
-import aml.ui.OntologyFileChooser;
 import aml.util.ExtensionFilter;
 import aml.util.InteractionManager;
 import aml.util.Similarity;
@@ -127,11 +123,9 @@ public class AML
     private boolean directNeighbors = false;
     private boolean structuralSelection;    
 	//User interface and settings
-	private GUI userInterface;
 	private int activeMapping;
 	private boolean needSave = false;
-	private OntologyFileChooser ofc;
-	private AlignmentFileChooser afc;
+
 	private int classDistance = 2;
 	private int individualDistance = 2;
 	private boolean showAncestors = true;
@@ -190,8 +184,7 @@ public class AML
     	a = null;
     	activeMapping = -1;
     	evaluation = null;
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = false;
     }
     
@@ -303,7 +296,7 @@ public class AML
 	 */
 	public void evaluate()
 	{
-		boolean gui = userInterface != null;
+		boolean gui = false;
 		int[] eval = a.evaluate(ref); 
 		int found = a.size() - eval[1];
 		int correct = eval[0];
@@ -319,7 +312,7 @@ public class AML
 		if(gui)
 		{
 			evaluation = "Precision: " + prc + "; Recall: " + rec + "; F-measure: " + fms;
-			userInterface.refresh();
+
 		}
 		else
 			evaluation = "Precision\tRecall\tF-measure\tFound\tCorrect\tReference\n" + prc +
@@ -332,8 +325,7 @@ public class AML
     public void filter()
     {
    		CustomFilterer.filter();
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = true;
     }
     
@@ -343,8 +335,7 @@ public class AML
     public void flag()
     {
    		CustomFlagger.flag();
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = true;
     }
     
@@ -367,11 +358,7 @@ public class AML
 	/**
 	 * @return the file chooser for alignment files
 	 */
-    public AlignmentFileChooser getAlignmentFileChooser()
-    {
-    	return afc;
-    }
-    
+
     /**
      * @return the current background knowledge ontology
      */
@@ -495,11 +482,7 @@ public class AML
 	/**
      * @return the file chooser for ontology files 
      */
-	public OntologyFileChooser getOntologyFileChooser()
-    {
-    	return ofc;
-    }
-	
+
 	/**
 	 * @return the Path to AML's directory
 	 */
@@ -628,7 +611,6 @@ public class AML
     public void goTo(int index)
     {
     	activeMapping = index;
-    	userInterface.goTo(activeMapping);
     }
 
 	/**
@@ -719,8 +701,7 @@ public class AML
     	rep = null;
     	if(a.size() > 0)
     		activeMapping = 0;
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = true;
     }
     
@@ -778,8 +759,7 @@ public class AML
     	rep = null;
     	if(a.size() > 0)
     		activeMapping = 0;
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = true;
     }
     
@@ -847,8 +827,7 @@ public class AML
     	evaluation = null;
     	if(a.size() > 0)
     		activeMapping = 0;
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	needSave = false;
     }
 	
@@ -900,8 +879,7 @@ public class AML
     	activeMapping = -1;
     	evaluation = null;
     	//Refresh the user interface
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	defaultConfig();
     	StopWordExtender sw = new StopWordExtender();
     	sw.extendLexicons();
@@ -947,8 +925,7 @@ public class AML
     	activeMapping = -1;
     	evaluation = null;
     	//Refresh the user interface
-    	if(userInterface != null)
-    		userInterface.refresh();
+
     	defaultConfig();
     	StopWordExtender sw = new StopWordExtender();
     	sw.extendLexicons();
@@ -1038,15 +1015,7 @@ public class AML
 		}
 	}
 	
-	public void refreshMapping(int index)
-    {
-    	userInterface.refresh(index);
-    }
-    
-    public void refreshGUI()
-    {
-    	userInterface.refresh();
-    }
+
 
 	public void removeIncorrect()
 	{
@@ -1059,8 +1028,7 @@ public class AML
 			aml.setAlignment(reviewed);
 			if(a.size() > 0)
 				activeMapping = 0;
-			if(userInterface != null)
-				userInterface.refresh();
+
 			needSave = true;
 		}
 	}
@@ -1271,8 +1239,7 @@ public class AML
 		a.sortAscending();
 		if(a.size() > 0)
 			activeMapping = 0;
-		if(userInterface != null)
-			userInterface.refresh();
+
 	}
 
 	public void sortDescending()
@@ -1280,8 +1247,7 @@ public class AML
 		a.sortDescending();
 		if(a.size() > 0)
 			activeMapping = 0;
-		if(userInterface != null)
-			userInterface.refresh();
+
 	}
 
 	public void startGUI()
@@ -1297,25 +1263,14 @@ public class AML
                     break;
                 }
             }
-            UIManager.put("control", AMLColor.WHITE);
-            UIManager.put("background", AMLColor.WHITE);
-            UIManager.put("scrollbar", AMLColor.LIGHT_GRAY);
+
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
         //Initialize the file choosers
-        ofc = new OntologyFileChooser();
-        afc = new AlignmentFileChooser();
-        //Create and display the GUI
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                userInterface = new GUI();
-            }
-        });
+
 	}
 	
 	public boolean structuralSelection()

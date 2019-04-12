@@ -25,7 +25,7 @@ import java.net.URLDecoder;
 import java.util.*;
 
 import com.google.common.collect.Multimap;
-import org.semanticweb.elk.owlapi.ElkReasonerFactory;
+//import org.semanticweb.elk.owlapi.ElkReasonerFactory;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.ClassExpressionType;
@@ -1135,8 +1135,8 @@ public class Ontology
 		if(useReasoner)
 		{
 			//Create an ELK reasoner
-			OWLReasonerFactory reasonerFactory = new ElkReasonerFactory();
-			reasoner = reasonerFactory.createReasoner(o);
+			//OWLReasonerFactory reasonerFactory = new ElkReasonerFactory();
+			//reasoner = reasonerFactory.createReasoner(o);
 		}
 
 		//Auxiliary data structures to capture semantic disjointness
