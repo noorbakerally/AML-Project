@@ -45,8 +45,12 @@ import aml.settings.StringSimMeasure;
 import aml.settings.WordMatchStrategy;
 
 import com.google.gson.Gson;
+import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.FileDocumentSource;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public class Main
 {
@@ -70,12 +74,20 @@ public class Main
 	 */
 	public static void main(String[] args) throws OWLOntologyCreationException {
 
-		String ontFromIRI = args[0].replaceAll("-from=","");
-		String ontToIRI = args[1].replaceAll("-to=","");
 
+		//String ontFromIRI = args[0].replaceAll("-from=","");
+		//String ontToIRI = args[1].replaceAll("-to=","");
+
+		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+
+		OWLOntology ont1 = manager.loadOntology(IRI.create("https://w3id.org/seas/ElectricPowerSystemOntology-1.0.rdf"));
+		OWLOntology ont2 = manager.loadOntology(IRI.create("https://www.w3.org/ns/ssn/ssn.ttl"));
+
+		/*
 		System.out.println("LogMap Alignment");
 		System.out.println("Ontology from:"+ontFromIRI);
 		System.out.println("Ontology to:"+ontToIRI);
+
 
 
 
@@ -111,6 +123,7 @@ public class Main
 
 		Gson gson = new Gson();
 		System.out.println("#EncodedMapping:"+gson.toJson(correspondenceList)+"#");
+		*/
 
 		/*
 		AML aml = AML.getInstance();

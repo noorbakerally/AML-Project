@@ -841,7 +841,7 @@ public class AML
 		time = System.currentTimeMillis()/1000 - time;
 		System.out.println(bk.getURI() + " loaded in " + time + " seconds");
 	}
-	
+
 	public void openOntologies(String src, String tgt) throws OWLOntologyCreationException
 	{
 		closeOntologies();
@@ -851,7 +851,7 @@ public class AML
 		if(useReasoner)
 			PropertyConfigurator.configure(dir + LOG);
 		long time = System.currentTimeMillis()/1000;
-		System.out.println("Loading source ontology");	
+		System.out.println("Loading source ontology");
 		source = new Ontology(src);
 		time = System.currentTimeMillis()/1000 - time;
 		System.out.println(source.getURI() + " loaded in " + time + " seconds");
