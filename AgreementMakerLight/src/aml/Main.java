@@ -31,8 +31,12 @@ package aml;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
+import aml.Generic.Correspondence;
 import aml.match.Mapping;
 import aml.settings.MatchStep;
 import aml.settings.NeighborSimilarityStrategy;
@@ -40,6 +44,8 @@ import aml.settings.SelectionType;
 import aml.settings.StringSimMeasure;
 import aml.settings.WordMatchStrategy;
 
+import com.google.gson.Gson;
+import org.semanticweb.owlapi.io.FileDocumentSource;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 public class Main
@@ -63,8 +69,52 @@ public class Main
 	 * depending on whether arguments are given
 	 */
 	public static void main(String[] args) throws OWLOntologyCreationException {
+
+		String ontFromIRI = args[0].replaceAll("-from=","");
+		String ontToIRI = args[1].replaceAll("-to=","");
+
+		System.out.println("LogMap Alignment");
+		System.out.println("Ontology from:"+ontFromIRI);
+		System.out.println("Ontology to:"+ontToIRI);
+
+
+
 		AML aml = AML.getInstance();
-		String s = "/home/noor/Downloads/dogont.owl";
+		aml.openOntologies(ontFromIRI, ontToIRI);
+		aml.matchAuto();
+		System.out.println("Number of Alignment:"+aml.getAlignment().size());
+		Set<Correspondence> correspondenceList = new HashSet<Correspondence>();
+
+
+		for (Mapping mapping:aml.getAlignment()){
+
+			Correspondence correspondence = new Correspondence();
+
+			correspondence.iriFrom = mapping.getSourceURI();
+			correspondence.iriTo = mapping.getTargetURI();
+			correspondence.confidence = BigDecimal.valueOf(mapping.getSimilarity());
+
+			//Correspondence
+			if (mapping.getRelationship().equals("subclass")){
+				correspondence.rel = Correspondence.relation.SUBCLASS;
+			}
+			if (mapping.getRelationship().equals("superclass")){
+				correspondence.rel = Correspondence.relation.SUPERCLASS;
+			}
+			if (mapping.getRelationship().equals("equivalence")){
+				correspondence.rel = Correspondence.relation.EQUIVALENT;
+			}
+			correspondenceList.add(correspondence);
+		}
+
+		FileDocumentSource s;
+
+		Gson gson = new Gson();
+		System.out.println("#EncodedMapping:"+gson.toJson(correspondenceList)+"#");
+
+		/*
+		AML aml = AML.getInstance();
+		String s = "https://ci.mines-stetienne.fr/seas/ElectricPowerSystemOntology-1.0.rdf";
 		String t = "/home/noor/Downloads/ssn.rdf";
 		aml.openOntologies(s, t);
 		aml.matchAuto();
@@ -80,6 +130,8 @@ public class Main
 			System.out.println("Relation:"+correspodence.getRelationship().getLabel());
 			System.out.println("Similarity:"+correspodence.getSimilarity());
 			i++;
-		}
+		}*/
+
+
 	}
 }

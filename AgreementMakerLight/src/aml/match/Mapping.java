@@ -106,7 +106,7 @@ public class Mapping implements Comparable<Mapping>
 
 //Public Methods
 
-	@Override
+
 	/**
 	 * Mappings are compared first based on their status, then
 	 * based on their similarity. This enables both sorting by
