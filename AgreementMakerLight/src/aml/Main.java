@@ -78,20 +78,14 @@ public class Main
 	public static void main(String[] args) throws OWLOntologyCreationException, IOException, URISyntaxException {
 
 
-
-
-
-		//String ontFromIRI = "https://ci.mines-stetienne.fr/seas/ElectricPowerSystemOntology-1.0.rdf";
+		//String ontFromIRI = "file:///home/noor/Downloads/dogont.owl";
 		//String ontToIRI = "https://www.w3.org/ns/ssn/ssn.rdf";
 
 		String ontFromIRI = args[0].replaceAll("-from=","");
 		String ontToIRI = args[1].replaceAll("-to=","");
 
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-
-		OWLOntology ont1 = manager.loadOntology(IRI.create(ontFromIRI));
-		OWLOntology ont2 = manager.loadOntology(IRI.create(ontToIRI));
-
+		System.out.println("Ontology from:"+ontFromIRI);
+		System.out.println("Ontology to:"+ontToIRI);
 
 		AML aml = AML.getInstance();
 		aml.openOntologies(ontFromIRI, ontToIRI);
