@@ -31,13 +31,19 @@ package aml;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
 import aml.Generic.Correspondence;
 import aml.match.Mapping;
+import aml.ontology.Ontology;
 import aml.settings.MatchStep;
 import aml.settings.NeighborSimilarityStrategy;
 import aml.settings.SelectionType;
@@ -47,10 +53,7 @@ import aml.settings.WordMatchStrategy;
 import com.google.gson.Gson;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.io.FileDocumentSource;
-import org.semanticweb.owlapi.model.IRI;
-import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.*;
 
 public class Main
 {
@@ -72,23 +75,16 @@ public class Main
 	 * Runs AgreementMakerLight in GUI or CLI mode
 	 * depending on whether arguments are given
 	 */
-	public static void main(String[] args) throws OWLOntologyCreationException {
+	public static void main(String[] args) throws OWLOntologyCreationException, IOException, URISyntaxException {
 
 
-		//String ontFromIRI = args[0].replaceAll("-from=","");
-		//String ontToIRI = args[1].replaceAll("-to=","");
-
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-
-		OWLOntology ont1 = manager.loadOntology(IRI.create("https://w3id.org/seas/ElectricPowerSystemOntology-1.0.rdf"));
-		OWLOntology ont2 = manager.loadOntology(IRI.create("https://www.w3.org/ns/ssn/ssn.ttl"));
-
-		/*
-		System.out.println("LogMap Alignment");
-		System.out.println("Ontology from:"+ontFromIRI);
-		System.out.println("Ontology to:"+ontToIRI);
 
 
+		//String ontFromIRI = "file:///home/noor/Downloads/dogont.owl";
+		//String ontToIRI = "https://www.w3.org/ns/ssn/ssn.rdf";
+
+		String ontFromIRI = args[0].replaceAll("-from=","");
+		String ontToIRI = args[1].replaceAll("-to=","");
 
 
 		AML aml = AML.getInstance();
@@ -119,31 +115,10 @@ public class Main
 			correspondenceList.add(correspondence);
 		}
 
-		FileDocumentSource s;
 
 		Gson gson = new Gson();
 		System.out.println("#EncodedMapping:"+gson.toJson(correspondenceList)+"#");
-		*/
 
-		/*
-		AML aml = AML.getInstance();
-		String s = "https://ci.mines-stetienne.fr/seas/ElectricPowerSystemOntology-1.0.rdf";
-		String t = "/home/noor/Downloads/ssn.rdf";
-		aml.openOntologies(s, t);
-		aml.matchAuto();
-		System.out.println("Number of Alignment:"+aml.getAlignment().size());
-
-
-
-		int i = 1;
-		for (Mapping correspodence:aml.getAlignment()){
-			System.out.println("Mapping:"+i);
-			System.out.println("SourceURI:"+correspodence.getSourceURI());
-			System.out.println("TargetURI:"+correspodence.getTargetURI());
-			System.out.println("Relation:"+correspodence.getRelationship().getLabel());
-			System.out.println("Similarity:"+correspodence.getSimilarity());
-			i++;
-		}*/
 
 
 	}

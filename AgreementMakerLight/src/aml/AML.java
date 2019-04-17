@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -842,8 +843,7 @@ public class AML
 		System.out.println(bk.getURI() + " loaded in " + time + " seconds");
 	}
 
-	public void openOntologies(String src, String tgt) throws OWLOntologyCreationException
-	{
+	public void openOntologies(String src, String tgt) throws OWLOntologyCreationException, URISyntaxException {
 		closeOntologies();
         //Initialize the URIMap and RelationshipMap
 		uris = new URIMap();
@@ -852,7 +852,7 @@ public class AML
 			PropertyConfigurator.configure(dir + LOG);
 		long time = System.currentTimeMillis()/1000;
 		System.out.println("Loading source ontology");
-		source = new Ontology(src);
+		source = new Ontology(new URI(src));
 		time = System.currentTimeMillis()/1000 - time;
 		System.out.println(source.getURI() + " loaded in " + time + " seconds");
 		System.out.println("Classes: " + source.count(EntityType.CLASS));
@@ -860,7 +860,7 @@ public class AML
 		System.out.println("Properties: " + (source.count(EntityType.DATA)+source.count(EntityType.OBJECT)));
 		time = System.currentTimeMillis()/1000;
 		System.out.println("Loading target ontology");
-		target = new Ontology(tgt);
+		target = new Ontology(new URI(src));
 		time = System.currentTimeMillis()/1000 - time;
 		System.out.println(target.getURI() + " loaded in " + time + " seconds");
 		System.out.println("Classes: " + target.count(EntityType.CLASS));
